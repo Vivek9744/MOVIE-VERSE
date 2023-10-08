@@ -9,6 +9,7 @@ function App() {
       <Header/>
        <Routes>
        BSDFHBSFJGHBHGBDSH
+       DMJDFGJDHJDNGJ
          <Route path="/" element={ <Cards/>}/>
          <Route path="/addmovie" element={ <AddMovie/>}/>
         <Route path="/details/:id" element={<Detail/>}/>
