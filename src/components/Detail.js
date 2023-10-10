@@ -1,7 +1,9 @@
 import React, { useState ,useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import {moviesRef} from '../firebase/firebase';
-import {getDoc} from 'firebase/firestore';
+import {doc, getDoc} from 'firebase/firestore';
+import {db} from '../firebase/firebase';
+
 const Detail = () => {
   const {id}=useParams();
   const[data,setData]=useState({
@@ -11,11 +13,15 @@ const Detail = () => {
     description:""
   });
   useEffect(()=>{
-    async function getData(){
-   const _data=await getDoc(moviesRef,id);
-     setData(data.data());
+     async function getData(){
+     const _doc= doc(db,"movies",id);
+     const _data=await getDoc(_doc);
+     setData(_data.data());
     }
-  })
+    getData();
+  },[])
+ 
+//  const {text}=data.description;
   const [showDescription, setShowDescription] = useState(true);
   const [showReviews, setShowReviews] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -44,6 +50,7 @@ const Detail = () => {
 
   return (
     <div>
+    {/* {   console.log(data)} */}
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-24 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
@@ -53,18 +60,19 @@ const Detail = () => {
                 <img
                   alt="ecommerce"
                   className="w-full h-full"
-                  src="data.image"
+                  src={data.image}
                 />
               </div>
             </div>
 
             <div className="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
-              <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                BRAND NAME
-              </h2>
-              <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">
-                Animated Night Hill Illustrations
+             
+              <h1 className="text-gray-100 text-3xl title-font font-medium mb-4">
+                {data.name}
               </h1>
+              <h2 className="text-gray-100 text-3xl title-font font-medium mb-4">
+                {data.year}
+              </h2>
               <div className="flex mb-4">
                 <a
                   className={`flex-grow ${
@@ -100,36 +108,8 @@ const Detail = () => {
               {/* Description Section */}
               {showDescription && (
                 <p className="leading-relaxed mb-4">
-                  Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                  sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo
-                  juiceramps cornhole raw denim forage brooklyn. Everyday carry
-                  +1 seitan poutine tumeric. Gastropub blue bottle austin
-                  listicle pour-over, neutra jean.
-                  Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                  sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo
-                  juiceramps cornhole raw denim forage brooklyn. Everyday carry
-                  +1 seitan poutine tumeric. Gastropub blue bottle austin
-                  listicle pour-over, neutra jean.
-                  Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                  sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo
-                  juiceramps cornhole raw denim forage brooklyn. Everyday carry
-                  +1 seitan poutine tumeric. Gastropub blue bottle austin
-                  listicle pour-over, neutra jean.
-                  Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                  sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo
-                  juiceramps cornhole raw denim forage brooklyn. Everyday carry
-                  +1 seitan poutine tumeric. Gastropub blue bottle austin
-                  listicle pour-over, neutra jean.
-                  Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                  sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo
-                  juiceramps cornhole raw denim forage brooklyn. Everyday carry
-                  +1 seitan poutine tumeric. Gastropub blue bottle austin
-                  listicle pour-over, neutra jean.
-                  Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                  sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo
-                  juiceramps cornhole raw denim forage brooklyn. Everyday carry
-                  +1 seitan poutine tumeric. Gastropub blue bottle austin
-                  listicle pour-over, neutra jean.
+                  
+                {data.description}
                   {/* Rest of the description content */}
                 </p>
               )}
@@ -173,13 +153,14 @@ const Detail = () => {
               <img
                 alt="ecommerce"
                 className="w-full h-full"
-                src="https://www.comingsoon.net/wp-content/uploads/sites/3/2023/06/Watch-the-Transformers-Movies-Before-Rise-of-the-Beasts.jpg"
+                src={data.image}
               />
             </div>
           </div>
         </div>
       </section>
     </div>
+    
   );
 };
 
