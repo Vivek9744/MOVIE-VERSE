@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import {moviesRef} from '../firebase/firebase';
 import {doc, getDoc} from 'firebase/firestore';
 import {db} from '../firebase/firebase';
-
 const Detail = () => {
   const {id}=useParams();
   const[data,setData]=useState({
@@ -20,12 +19,11 @@ const Detail = () => {
     }
     getData();
   },[])
- 
+  const [showMore, setShowMore]=useState(false);
 //  const {text}=data.description;
   const [showDescription, setShowDescription] = useState(true);
   const [showReviews, setShowReviews] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-
   // Function to show Description section
   const showDescriptionSection = () => {
     
@@ -33,24 +31,21 @@ const Detail = () => {
     setShowReviews(false);
     setShowDetails(false);
   };
-
   // Function to show Reviews section
   const showReviewsSection = () => {
     setShowDescription(false);
     setShowReviews(true);
     setShowDetails(false);
   };
-
   // Function to show Details section
   const showDetailsSection = () => {
     setShowDescription(false);
     setShowReviews(false);
     setShowDetails(true);
   };
-
   return (
     <div>
-    {/* {   console.log(data)} */}
+    {   console.log(data)}
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-24 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
@@ -64,11 +59,10 @@ const Detail = () => {
                 />
               </div>
             </div>
-
             <div className="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
              
               <h1 className="text-gray-100 text-3xl title-font font-medium mb-4">
-                {data.name}
+                {data.title}
               </h1>
               <h2 className="text-gray-100 text-3xl title-font font-medium mb-4">
                 {data.year}
@@ -109,25 +103,26 @@ const Detail = () => {
               {showDescription && (
                 <p className="leading-relaxed mb-4">
                   
-                {data.description}
+                  <h6>
+                      {showMore ? data.description : `${data.description.substring(0, 250)}`}
+                      <button className="btn text-orange-700" onClick={() => setShowMore(!showMore)}>
+                      {showMore ? "  Show less" : "  Show more"}</button>
+                      </h6>
                   {/* Rest of the description content */}
                 </p>
               )}
-
               {/* Reviews Section */}
               {showReviews && (
                 <div>
                   vivek chaudhary is hero
                 </div>
               )}
-
               {/* Details Section */}
               {showDetails && (
                 <div>
                   {/* Add your Details content here */}
                 </div>
               )}
-
               <div className="flex">
                 <button className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
                   Button
@@ -147,7 +142,6 @@ const Detail = () => {
                 </button>
               </div>
             </div>
-
             {/* Image section for larger devices */}
             <div className="hidden lg:block lg:w-1/2 h-80 object-cover object-center rounded" style={{ position: 'fixed', top: '10', right: '10px', zIndex: '999' }}>
               <img
@@ -163,5 +157,4 @@ const Detail = () => {
     
   );
 };
-
 export default Detail;
