@@ -9,12 +9,22 @@ const Header = () => {
       <Link to='/'><span>Filmy<span className='text-white'>Verse</span></span></Link>
       <Link to="/addmovie">
       <h1 className="text-lg text-white cursor-pointer flex items-center">
+      
       <Button variant="">
       <AddIcon className="mr-1" style={{ color: 'red' }} />
       Add New
     </Button>
   </h1>
 </Link>
+      <Link to="/search">
+      <h1 className="text-lg text-white cursor-pointer flex items-center">
+      
+      <Button variant="">
+    
+      SearchMovie
+    </Button>
+  </h1>
+      </Link>
 
     </div>
   )
