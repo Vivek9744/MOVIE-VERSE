@@ -112,24 +112,22 @@ const Detail = () => {
                 </div>
                 {/* Description Section */}
                 {showDescription && (
-  <div className="leading-relaxed mb-4">
-    {data.description.length <= 250 || showMore ? (
-      data.description
-    ) : (
-      <>
-        {data.description.substring(0, 250)}
-        <button
-          className="btn text-orange-700"
-          onClick={() => setShowMore(!showMore)}
-        >
-          {showMore ? "Show less" : "Show more"}
-        </button>
-      </>
-    )}
-  </div>
-)}
-
-
+                  <div className="leading-relaxed mb-4">
+                    {data.description.length <= 250 ? (
+                      data.description
+                    ) : (
+                      <>
+                        {showMore?data.description : `${data.description.substring(0, 250)}`}
+                        <button
+                          className="btn text-orange-700"
+                          onClick={() => setShowMore(!showMore)}
+                        >
+                          {showMore ? "Show less" : "Show more"}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
 
                 {/* Reviews Section */}
                 {showReviews && <div>vivek chaudhary is hero</div>}
