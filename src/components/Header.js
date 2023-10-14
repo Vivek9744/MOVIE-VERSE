@@ -21,7 +21,7 @@ const Header = () => {
       
       <Button variant="">
     
-      SearchMovie
+      Search
     </Button>
   </h1>
       </Link>

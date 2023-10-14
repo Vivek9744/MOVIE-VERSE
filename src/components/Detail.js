@@ -3,14 +3,19 @@ import { useParams } from "react-router-dom";
 import { moviesRef } from "../firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import Review from './Review'
+import ReactStars from 'react-stars'
 import { ThreeCircles } from "react-loader-spinner";
 const Detail = () => {
   const { id } = useParams();
+  console.log(id)
   const [data, setData] = useState({
     title: "",
     year: "",
     image: "",
     description: "",
+    rating:0,
+    Rated:0
   });
 
   const [loading, setLoading] = useState(false);
@@ -69,12 +74,21 @@ const Detail = () => {
                     className="w-full h-full"
                     src={data.image}
                   />
+                  
                 </div>
+              
               </div>
               <div className="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
                 <h1 className="text-gray-100 text-3xl title-font font-medium mb-4 ">
                   {data.title}
+                  <ReactStars
+                   size={20}
+                   half={true}
+                   value={data.rating/data.rated}
+                   edeit={false}
+                   />
                 </h1>
+               
                 <h2 className="text-gray-100 text-3xl title-font font-medium mb-4">
                   {data.year}
                 </h2>
@@ -89,6 +103,7 @@ const Detail = () => {
                   >
                     Description
                   </a>
+                 
                   <a
                     className={`flex-grow ${
                       showReviews
@@ -126,19 +141,7 @@ const Detail = () => {
                         </button>
                       </>
                     )}
-                  </div>
-                )}
-
-                {/* Reviews Section */}
-                {showReviews && <div>vivek chaudhary is hero</div>}
-                {/* Details Section */}
-                {showDetails && (
-                  <div>{/* Add your Details content here */}</div>
-                )}
-                <div className="flex">
-                  <button className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
-                    Button
-                  </button>
+                   
                   <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                     <svg
                       fill="currentColor"
@@ -152,6 +155,17 @@ const Detail = () => {
                       <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                     </svg>
                   </button>
+                  </div>
+                )}
+
+                {/* Reviews Section */}
+                {showReviews && <Review id={id} prevRating={data.rating} userRated={data.rated}/>}
+                {/* Details Section */}
+                {showDetails && (
+                  <div>{/* Add your Details content here */}</div>
+                )}
+                <div className="flex">
+                 
                 </div>
               </div>
               {/* Image section for larger devices */}

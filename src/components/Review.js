@@ -3,8 +3,9 @@ import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import { reviewsRef, db } from '../firebase/firebase';
-import { addDoc, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
 import swal from 'sweetalert';
+import ReactStars from 'react-stars';
 
 const labels = {
   0.5: 'Useless',
@@ -27,8 +28,8 @@ const Review = ({ id, prevRating, userRated }) => {
   const [reviewText, setReviewText] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [rating, setRating] = useState(0);
-  const [data, setData] = useState(null);
-  const [reviewLoading, setReviewLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
 
   const handleSendReview = async () => {
     if (reviewText && rating > 0) {
@@ -71,9 +72,20 @@ const Review = ({ id, prevRating, userRated }) => {
   };
 
   useEffect(() => {
-    // You may want to fetch data here if necessary.
-    // Example: Fetch movie data by ID and set it in the 'data' state.
-  }, [id]); // You can specify dependencies as needed.
+    async function getData() {
+      setReviewsLoading(true);
+      let q = query(reviewsRef, where('movieid', '==', id));
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        setData((prev) => [...prev, doc.data()]);
+      });
+
+      setReviewsLoading(false);
+    }
+
+    getData();
+  }, [id]);
 
   return (
     <div className="p-4 border rounded-lg border-gray-300">
@@ -99,8 +111,9 @@ const Review = ({ id, prevRating, userRated }) => {
             getLabelText={getLabelText}
             onChange={(event, newValue) => {
               setRating(newValue);
-            }}
-            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+            }
+            }
+            emptyIcon={<StarIcon style={{ opacity: 1.56 }} fontSize="inherit" />}
           />
         </Box>
         <button
@@ -112,13 +125,34 @@ const Review = ({ id, prevRating, userRated }) => {
         >
           {isSending ? 'Sending...' : 'Send Review'}
         </button>
-        {reviewLoading ? (
-          <div className='mt-4 flex justify-center'>
-            {/* Replace 'ThreeDots' with your loading component */}
-            <ThreeDots height={10} color="white" />
-          </div>
-        ) : null}
       </div>
+      {reviewsLoading ? (
+        <div className="mt-4 flex justify-center">
+          {/* Use a simple loading text or element as a placeholder */}
+          Loading...
+        </div>
+      ) : (
+        <div className="mt-4">
+          <h2 className="text-2xl font-semibold">Reviews</h2>
+          {data.map((e, i) => (
+            <div className="bg-gray-900 p-4 rounded-lg my-4" key={i}>
+              <p className="text-lg font-semibold">{e.name}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(e.timestamp).toLocaleString()}
+              </p>
+              <div className="my-2">
+                <ReactStars
+                  size={30}
+                  half={true}
+                  value={e.rating}
+                  edit={false}
+                />
+              </div>
+              <p className="text-gray-200">{e.thought}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

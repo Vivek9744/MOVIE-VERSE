@@ -3,7 +3,7 @@ import { ThreeDots } from "react-loader-spinner";
 import HoverRating from "./HoverRating";
 import { Link } from "react-router-dom";
 
-const API_URL = "https://api.themoviedb.org/3/movie/popular?api_key=cbbcf5eca65af3397d4beecf2c2dfa18";
+const API_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=cbbcf5eca65af3397d4beecf2c2dfa18";
 const API_SEARCH = "https://api.themoviedb.org/3/search/movie?api_key=cbbcf5eca65af3397d4beecf2c2dfa18";
 
 const Search = () => {
@@ -25,6 +25,11 @@ const Search = () => {
     e.preventDefault();
     setLoading(true); // Set loading to true when starting the search
 
+
+
+
+
+    
     try {
       const url = `https://api.themoviedb.org/3/search/movie?api_key=cbbcf5eca65af3397d4beecf2c2dfa18&query=${query}`;
       const res = await fetch(url);
@@ -44,7 +49,7 @@ const Search = () => {
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-col text-center w-full mb-12">
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-100">
-              Search Movie
+              Search
             </h1>
           </div>
           <div className="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
@@ -70,6 +75,7 @@ const Search = () => {
           </div>
         </div>
         <div>
+        
           {movies.length > 0 ? (
             <div className="flex flex-wrap justify-between p-3 mt-2">
               {loading ? (
@@ -79,14 +85,17 @@ const Search = () => {
               ) : (
                 movies.map((movie, i) => {
                   return (
-                    <Link to={`/details/${movie.id}`} key={i}>
-                      <div
+                    
+                    <Link
+  to={`/detail2/${movie.id}`}
+>
+                      <div key={i}
                         className="border border-gray-300 rounded-lg p-2 mb-4 mt-3 shadow-md hover:transform hover:scale-105 transition-transform"
                       >
                         <div className="border border-gray-300 rounded-lg p-2">
                           <img
                             className="h-80 w-60"
-                            src={API_IMG + movie.poster_path}
+                            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                             alt={movie.title}
                           />
                         </div>
