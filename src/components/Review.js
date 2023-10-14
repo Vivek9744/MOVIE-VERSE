@@ -6,6 +6,7 @@ import { reviewsRef, db } from '../firebase/firebase';
 import { addDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
 import swal from 'sweetalert';
 import ReactStars from 'react-stars';
+import { ThreeCircles } from 'react-loader-spinner';
 
 const labels = {
   0.5: 'Useless',
@@ -63,7 +64,16 @@ const Review = ({ id, prevRating, userRated }) => {
 
       console.log('Review sent successfully');
 
-      // Optionally, you can add additional logic or success message here.
+      setData((prevData) => [
+        ...prevData,
+        {
+          name: 'vivek',
+          rating: rating,
+          thought: reviewText,
+          timestamp: new Date().getTime(),
+        },
+      ]);
+
       swal('Success', 'Review sent successfully.', 'success');
     } catch (error) {
       console.error('Error sending the review:', error);
@@ -77,10 +87,12 @@ const Review = ({ id, prevRating, userRated }) => {
       let q = query(reviewsRef, where('movieid', '==', id));
       const querySnapshot = await getDocs(q);
 
+      const newData = [];
       querySnapshot.forEach((doc) => {
-        setData((prev) => [...prev, doc.data()]);
+        newData.push(doc.data());
       });
 
+      setData(newData);
       setReviewsLoading(false);
     }
 
@@ -107,13 +119,11 @@ const Review = ({ id, prevRating, userRated }) => {
           <Rating
             name="hover-feedback"
             value={rating}
-            precision={0.5}
             getLabelText={getLabelText}
             onChange={(event, newValue) => {
               setRating(newValue);
-            }
-            }
-            emptyIcon={<StarIcon style={{ opacity: 1.56 }} fontSize="inherit" />}
+            }}
+            emptyIcon={<StarIcon style={{ color: 'grey', opacity: 1.5 }} fontSize="inherit" />}
           />
         </Box>
         <button
@@ -127,11 +137,10 @@ const Review = ({ id, prevRating, userRated }) => {
         </button>
       </div>
       {reviewsLoading ? (
-        <div className="mt-4 flex justify-center">
-          {/* Use a simple loading text or element as a placeholder */}
-          Loading...
+        <div className="h-96 flex w-full justify-center items-center">
+          <ThreeCircles height={30} color="white" />
         </div>
-      ) : (
+      ) : data.length > 0 ? (
         <div className="mt-4">
           <h2 className="text-2xl font-semibold">Reviews</h2>
           {data.map((e, i) => (
@@ -141,17 +150,14 @@ const Review = ({ id, prevRating, userRated }) => {
                 {new Date(e.timestamp).toLocaleString()}
               </p>
               <div className="my-2">
-                <ReactStars
-                  size={30}
-                  half={true}
-                  value={e.rating}
-                  edit={false}
-                />
+                <ReactStars size={30} half={true} value={e.rating} edit={false} />
               </div>
               <p className="text-gray-200">{e.thought}</p>
             </div>
           ))}
         </div>
+      ) : (
+        <h2 className="text-2xl font-semibold">No Reviews yet</h2>
       )}
     </div>
   );

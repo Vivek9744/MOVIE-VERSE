@@ -84,7 +84,7 @@ const Detail = () => {
                   <ReactStars
                    size={20}
                    half={true}
-                   value={data.rating/data.rated}
+                   value={data.rating/data.Rated}
                    edeit={false}
                    />
                 </h1>
@@ -159,7 +159,7 @@ const Detail = () => {
                 )}
 
                 {/* Reviews Section */}
-                {showReviews && <Review id={id} prevRating={data.rating} userRated={data.rated}/>}
+                {showReviews && <Review id={id} prevRating={data.rating} userRated={data.Rated}/>}
                 {/* Details Section */}
                 {showDetails && (
                   <div>{/* Add your Details content here */}</div>
