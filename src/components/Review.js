@@ -61,7 +61,7 @@ const Review = ({ id }) => {
       // const updatedRating = (prevRating*userRated + rating) / (userRated + 1);
       //  const movieDocRef = doc(db, 'movies', id);
       const _doc = doc(db,'movies',id);
-
+      
       const _data = await getDoc(_doc);
       const preRating = _data.data().rating;
       const prerated = _data.data().rated; 

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { moviesRef } from "../firebase/firebase";
 import { doc, getDoc} from "firebase/firestore";
 import { db } from "../firebase/firebase";
-import Review from './Review'
+import Review from "./Review"
 import ReactStars from 'react-stars'
 import { ThreeCircles } from "react-loader-spinner";
 const Detail = () => {
@@ -17,7 +17,9 @@ const Detail = () => {
     rating:0,
     rated:0
   });
- 
+
+  // Function to update reviews state
+  
     
   const [loading, setLoading] = useState(false);
   useEffect(() => {

@@ -5,9 +5,17 @@ import AddMovie from './components/AddMovie'
 import Detail from './components/Detail'
 import Search from './components/Search'
 import Detail2 from './components/Detail2'
+import {createContext,useEffect,useState} from "react"
+
+const Appstate=createContext();
 function App() {
+  consst[login,setLogin]=useState(false);
+  const[userName,setUserName]=useState("");
   return (
-       <div className='App '>
+  <Appstate.Provider value={{login,userName,setLogin,setUserName}}> 
+
+ 
+          <div className='App '>
       <Header/>
        <Routes>
 
@@ -19,7 +27,9 @@ function App() {
 
        </Routes>
        </div>
+    </Appstate.Provider>
   );
 }
  
 export default App;
+export {Appstate}

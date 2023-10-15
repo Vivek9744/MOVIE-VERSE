@@ -9,7 +9,9 @@ const AddMovie = () => {
     title: "",
     year: "",
     description: "",
-    image: ""
+    image: "",
+    rated:0,
+    rating:0
   });
   const [loading, setLoading] = useState(false);
 
@@ -44,7 +46,9 @@ const AddMovie = () => {
       title: "",
       year: "",
       description: "",
-      image: ""
+      image: "",
+      rating:0,
+      rated:0
     });
   };
     return (
