@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import HoverRating from "./HoverRating"; // Import the HoverRating component
 import { getDocs } from "firebase/firestore";
+import { doc, getDoc} from "firebase/firestore";
+import { db } from "../firebase/firebase";
 import { moviesRef } from "../firebase/firebase";
 import {Link} from 'react-router-dom';
 
@@ -23,6 +25,9 @@ const Cards = () => {
     }
     getData();
   }, []);
+
+
+  
   // Render the component
   return (
     
@@ -58,7 +63,8 @@ const Cards = () => {
               <h1>Rating: {5}</h1>
               {/* Render the HoverRating component */}
               <h1>
-                <HoverRating />
+                <HoverRating   card_rated={e.rated} card_rating={e.rating}/>
+                {/* {console.log(e.rating)} */}
               </h1>
               {/* Display the movie release year */}
               <h1>Year: {e.year}</h1>

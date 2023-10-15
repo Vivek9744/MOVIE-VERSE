@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { moviesRef } from "../firebase/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc} from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import Review from './Review'
 import ReactStars from 'react-stars'
@@ -15,9 +15,10 @@ const Detail = () => {
     image: "",
     description: "",
     rating:0,
-    Rated:0
+    rated:0
   });
-
+ 
+    
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function getData() {
@@ -25,17 +26,18 @@ const Detail = () => {
       const _doc = doc(db, "movies", id);
       const _data = await getDoc(_doc);
       setData(_data.data());
+      console.log(data.rating)
       setLoading(false); // Set loading to false when data is fetched
     }
     getData();
   }, []);
-
+  
   const [showMore, setShowMore] = useState(false);
-
   //  const {text}=data.description;
   const [showDescription, setShowDescription] = useState(true);
   const [showReviews, setShowReviews] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  
   // Function to show Description section
   const showDescriptionSection = () => {
     setShowDescription(true);
@@ -57,7 +59,6 @@ const Detail = () => {
   return (
     <div>
       {/* {   console.log(data)} */}
-
       <section className="text-gray-600 body-font overflow-hidden">
         {loading ? (
           <div className="h-96 flex w-full justify-center items-center">
@@ -84,8 +85,8 @@ const Detail = () => {
                   <ReactStars
                    size={20}
                    half={true}
-                   value={data.rating/data.Rated}
-                   edeit={false}
+                   value={data.rating/data.rated}
+                   edit={false}
                    />
                 </h1>
                
@@ -157,10 +158,10 @@ const Detail = () => {
                   </button>
                   </div>
                 )}
-
                 {/* Reviews Section */}
-                {showReviews && <Review id={id} prevRating={data.rating} userRated={data.Rated}/>}
+                {showReviews && <Review id={id}/>}
                 {/* Details Section */}
+                
                 {showDetails && (
                   <div>{/* Add your Details content here */}</div>
                 )}

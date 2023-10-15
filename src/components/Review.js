@@ -1,9 +1,10 @@
+// Review.js
 import React, { useState, useEffect } from 'react';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import { reviewsRef, db } from '../firebase/firebase';
-import { addDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
+import { addDoc, doc, updateDoc, query, where, getDocs ,getDoc} from 'firebase/firestore';
 import swal from 'sweetalert';
 import ReactStars from 'react-stars';
 import { ThreeCircles } from 'react-loader-spinner';
@@ -25,10 +26,12 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
 
-const Review = ({ id, prevRating, userRated }) => {
+const Review = ({ id }) => {
+  
   const [reviewText, setReviewText] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [rating, setRating] = useState(0);
+  const[rated,setRated] = useState(0);
   const [data, setData] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(false);
 
@@ -50,20 +53,25 @@ const Review = ({ id, prevRating, userRated }) => {
         movieid: id,
         name: 'vivek',
         rating: rating,
+        rated:rated,
         thought: reviewText,
         timestamp: new Date().getTime(),
       });
 
-      const updatedRating = (prevRating + rating) / (userRated + 1);
-      const movieDocRef = doc(db, 'movies', id);
+      // const updatedRating = (prevRating*userRated + rating) / (userRated + 1);
+      //  const movieDocRef = doc(db, 'movies', id);
+      const _doc = doc(db,'movies',id);
 
-      await updateDoc(movieDocRef, {
-        rating: updatedRating,
-        rated: userRated + 1,
+      const _data = await getDoc(_doc);
+      const preRating = _data.data().rating;
+      const prerated = _data.data().rated; 
+
+      await updateDoc(_doc, {
+        rating: preRating + rating,
+        rated: prerated + 1,
       });
 
       console.log('Review sent successfully');
-
       setData((prevData) => [
         ...prevData,
         {
@@ -73,7 +81,8 @@ const Review = ({ id, prevRating, userRated }) => {
           timestamp: new Date().getTime(),
         },
       ]);
-
+      
+      
       swal('Success', 'Review sent successfully.', 'success');
     } catch (error) {
       console.error('Error sending the review:', error);

@@ -134,7 +134,6 @@ const AddMovie = () => {
     </div>
   </div>
 </section>
-
     </div>
   )
 }

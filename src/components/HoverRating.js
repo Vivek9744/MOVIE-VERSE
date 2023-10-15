@@ -20,10 +20,12 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
 
-export default function HoverRating() {
-  const [value, setValue] = useState(2);
+export default function HoverRating(props) {
+  // console.log(card_rating)
+  const initialValue = props.card_rating / props.card_rated; // Calculate the initial value
+  const [value, setValue] = useState(initialValue);  
   const [hover, setHover] = useState(-1);
-
+  
   return (
     <Box
       sx={{
