@@ -1,6 +1,11 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import React,{useState,useEffect} from 'react'
 
 const Login = () => {
+    const [form,setForm]=useState({
+        mobile:"",
+        passward:""
+    })
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 to-indigo-900">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -9,8 +14,10 @@ const Login = () => {
           <div>
             <label className="block text-gray-700">Mobile Number</label>
             <input
-              type="text"
-              className="w-full mt-2 py-2 px-3 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 text-gray-500 "
+              type="Number"
+              value={form.mobile}
+              onChange={(e)=>setForm({...form,mobile:e.target.value})}
+              className="w-full mt-2 py-2 px-3 border border-gray-300 rounded-md focus:ring focus:ring-gray-200 text-gray-500"
               placeholder="Enter your mobile number"
             />
           </div>
@@ -18,7 +25,9 @@ const Login = () => {
             <label className="block text-gray-700">Password</label>
             <input
               type="password"
-              className="w-full mt-2 py-2 px-3 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200   text-gray-500"
+              value={form.passward}
+              onChange={(e)=>setForm({...form,passward:e.target.value})}
+              className="w-full mt-2 py-2 px-3 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 text-gray-500"
               placeholder="Enter your password"
             />
           </div>
@@ -29,6 +38,13 @@ const Login = () => {
             >
               Log In
             </button>
+
+            <div className="text-gray-900">
+              Don't have an account yet?
+              <Link to="/signup">
+                <span className="text-blue-500">Sign up</span>
+              </Link>
+            </div>
           </div>
         </form>
       </div>

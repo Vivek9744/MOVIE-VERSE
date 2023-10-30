@@ -9,6 +9,8 @@ import Detail2 from './components/Detail2';
 import { createContext, useEffect, useState } from 'react';
 import Login from './components/Login';
 import SignUp from './components/SignUp'
+
+
 const Appstate = createContext();
 
 function App() {
