@@ -32,8 +32,6 @@ const Header = () => {
   </h1>
 </Link>
       }
-
-
       <Link to="/search">
       <h1 className="text-lg text-white cursor-pointer flex items-center">
       
